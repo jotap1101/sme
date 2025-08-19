@@ -1,9 +1,13 @@
-import { Button } from "@/components/ui/button";
+import LogoutButton from "@/components/authentication/logout-button";
+import { requireAuth } from "@/lib/auth-guard";
 
-export default function Home() {
+export default async function Home() {
+  const session = await requireAuth();
+
   return (
-    <div>
-      <Button>Click me</Button>
-    </div>
+    <>
+      {session && <p>Welcome back, {session.user.name}!</p>}
+      <LogoutButton />
+    </>
   );
 }
