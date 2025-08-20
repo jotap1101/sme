@@ -1,13 +1,7 @@
-import LogoutButton from "@/components/authentication/logout-button";
-import { requireAuth } from "@/lib/auth-guard";
-
-export default async function Home() {
-  const session = await requireAuth();
-
+export default function Home() {
   return (
     <>
-      {session && <p>Welcome back, {session.user.name}!</p>}
-      <LogoutButton />
+      <h1 className="text-2xl font-bold">Teste</h1>
     </>
   );
 }

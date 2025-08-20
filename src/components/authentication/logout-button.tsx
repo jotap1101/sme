@@ -4,10 +4,14 @@ import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
-const LogoutButton = () => {
+interface LogoutProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const LogoutButton = ({ children, className }: LogoutProps) => {
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -15,21 +19,15 @@ const LogoutButton = () => {
 
     authClient.signOut({
       fetchOptions: {
-        onRequest: (ctx) => {
+        onRequest: () => {
           toastId = toast.loading("Saindo...");
         },
         onError: (ctx) => {
-          if (toastId) {
-            toast.dismiss(toastId);
-          }
-
+          if (toastId) toast.dismiss(toastId);
           toast.error(ctx.error.message);
         },
         onSuccess: () => {
-          if (toastId) {
-            toast.dismiss(toastId);
-          }
-
+          if (toastId) toast.dismiss(toastId);
           toast.success("Você saiu com sucesso!");
           router.push("/sign-in");
         },
@@ -38,9 +36,9 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button variant="outline" size="icon" onClick={handleSignOut}>
-      <LogOutIcon />
-    </Button>
+    <div onClick={handleSignOut} className={className} style={{ cursor: "pointer" }}>
+      {children}
+    </div>
   );
 };
 
