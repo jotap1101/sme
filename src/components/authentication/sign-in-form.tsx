@@ -57,7 +57,6 @@ export function SignInForm({
       email: values.email,
       password: values.password,
       rememberMe: true,
-      callbackURL: `${window.location.origin}/dashboard`,
       fetchOptions: {
         onRequest: () => {
           toastId = toast.loading("Fazendo login...");

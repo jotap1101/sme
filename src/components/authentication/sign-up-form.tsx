@@ -104,7 +104,7 @@ export function SignUpForm({
         ? await convertImageToBase64(values.image)
         : undefined,
       fetchOptions: {
-        onRequest: () => {
+        onRequest: (ctx) => {
           toastId = toast.loading("Criando conta...");
         },
         onError: (ctx) => {
@@ -222,7 +222,7 @@ export function SignUpForm({
               <FormField
                 control={form.control}
                 name="image"
-                render={() => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Imagem de Perfil (opcional)</FormLabel>
                     <FormControl>
