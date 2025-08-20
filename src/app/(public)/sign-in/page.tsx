@@ -1,4 +1,11 @@
+import { Metadata } from "next";
+
 import { SignInForm } from "@/components/authentication/sign-in-form";
+
+export const metadata: Metadata = {
+  title: "Entrar | SME",
+  description: "Faça login na sua conta SME",
+};
 
 export default function Page() {
   return (

@@ -1,5 +1,5 @@
-import LogoutButton from "@/components/authentication/logout-button";
-import { requireAuth } from "@/lib/auth-guard";
+import { LogoutButton } from "@/components/authentication/logout-button";
+import { requireAuth } from "@/lib/require-auth";
 
 export default async function Home() {
   const session = await requireAuth();

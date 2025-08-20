@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -40,8 +39,6 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const router = useRouter();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,6 +54,7 @@ export function SignInForm({
       email: values.email,
       password: values.password,
       rememberMe: true,
+      callbackURL: `${window.location.origin}/dashboard`,
       fetchOptions: {
         onRequest: () => {
           toastId = toast.loading("Fazendo login...");
@@ -76,7 +74,6 @@ export function SignInForm({
           }
 
           toast.success("Login realizado com sucesso!");
-          router.push("/");
         },
       },
     });

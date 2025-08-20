@@ -4,10 +4,11 @@ import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
-const LogoutButton = () => {
+export const LogoutButton = () => {
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -15,7 +16,7 @@ const LogoutButton = () => {
 
     authClient.signOut({
       fetchOptions: {
-        onRequest: (ctx) => {
+        onRequest: () => {
           toastId = toast.loading("Saindo...");
         },
         onError: (ctx) => {
@@ -38,10 +39,15 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button variant="outline" size="icon" onClick={handleSignOut}>
-      <LogOutIcon />
-    </Button>
+    <ConfirmDialog
+      trigger={
+        <Button variant="outline" size="icon">
+          <LogOutIcon />
+        </Button>
+      }
+      title="Tem certeza que deseja sair?"
+      description="Você pode entrar novamente a qualquer momento."
+      onConfirm={handleSignOut}
+    />
   );
 };
-
-export default LogoutButton;

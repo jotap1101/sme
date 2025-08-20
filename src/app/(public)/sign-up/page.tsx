@@ -1,4 +1,11 @@
+import { Metadata } from "next";
+
 import { SignUpForm } from "@/components/authentication/sign-up-form";
+
+export const metadata: Metadata = {
+  title: "Criar Conta | SME",
+  description: "Crie uma nova conta na SME",
+};
 
 export default function Page() {
   return (

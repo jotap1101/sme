@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -24,8 +23,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getErrorMessage } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
+import { convertImageToBase64 } from "@/utils/convert-image-to-base64";
 
 const formSchema = z
   .object({
@@ -58,21 +58,10 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-async function convertImageToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const router = useRouter();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -103,8 +92,9 @@ export function SignUpForm({
       image: values.image
         ? await convertImageToBase64(values.image)
         : undefined,
+      callbackURL: `${window.location.origin}/sign-in`,
       fetchOptions: {
-        onRequest: (ctx) => {
+        onRequest: () => {
           toastId = toast.loading("Criando conta...");
         },
         onError: (ctx) => {
@@ -112,7 +102,9 @@ export function SignUpForm({
             toast.dismiss(toastId);
           }
 
-          toast.error(ctx.error.message);
+          toast.error(
+            getErrorMessage(ctx.error.code, "ptBr") || ctx.error.message,
+          );
         },
         onSuccess: () => {
           if (toastId) {
@@ -120,7 +112,6 @@ export function SignUpForm({
           }
 
           toast.success("Conta criada com sucesso!");
-          router.push("/sign-in");
         },
       },
     });
