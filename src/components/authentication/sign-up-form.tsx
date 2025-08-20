@@ -213,7 +213,7 @@ export function SignUpForm({
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Imagem de Perfil (opcional)</FormLabel>
                     <FormControl>

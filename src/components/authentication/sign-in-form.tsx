@@ -39,6 +39,8 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  let toastId: string | number | undefined;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +50,6 @@ export function SignInForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    let toastId: string | number | undefined;
-
     await authClient.signIn.email({
       email: values.email,
       password: values.password,
@@ -80,8 +80,29 @@ export function SignInForm({
   }
 
   const handleGoogleSignIn = async () => {
-    const data = await authClient.signIn.social({
+    await authClient.signIn.social({
       provider: "google",
+      fetchOptions: {
+        onRequest: () => {
+          toastId = toast.loading("Fazendo login...");
+        },
+        onError: (ctx) => {
+          if (toastId) {
+            toast.dismiss(toastId);
+          }
+
+          toast.error(
+            getErrorMessage(ctx.error.code, "ptBr") || ctx.error.message,
+          );
+        },
+        onSuccess: () => {
+          if (toastId) {
+            toast.dismiss(toastId);
+          }
+
+          toast.success("Login realizado com sucesso!");
+        },
+      },
     });
   };
 
