@@ -50,11 +50,14 @@ export function SignInForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const params = new URLSearchParams(window.location.search);
+    const redirectTo = params.get("redirectTo") || "/dashboard";
+
     await authClient.signIn.email({
       email: values.email,
       password: values.password,
       rememberMe: true,
-      callbackURL: `${window.location.origin}/dashboard`,
+      callbackURL: `${window.location.origin}${redirectTo}`,
       fetchOptions: {
         onRequest: () => {
           toastId = toast.loading("Fazendo login...");
