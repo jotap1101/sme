@@ -1,4 +1,14 @@
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  date,
+  json,
+  pgTable,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
+
+import { rolesEnum } from "@/db/enums";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -14,6 +24,13 @@ export const user = pgTable("user", {
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: rolesEnum().default("user"),
+  banned: boolean("banned"),
+  banReason: text("ban_reason"),
+  banExpires: timestamp("ban_expires"),
+  entityId: text("entity_id").references(() => entity.id, {
+    onDelete: "set null",
+  }),
 });
 
 export const session = pgTable("session", {
@@ -27,6 +44,7 @@ export const session = pgTable("session", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  impersonatedBy: text("impersonated_by"),
 });
 
 export const account = pgTable("account", {
@@ -58,4 +76,39 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at").$defaultFn(
     () => /* @__PURE__ */ new Date(),
   ),
+});
+
+export const entity = pgTable("entity", {
+  id: text("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  city: varchar("city", { length: 255 }).notNull(),
+  state: varchar("state", { length: 255 }).notNull(),
+  cnpj: varchar("cnpj", { length: 14 }).notNull(),
+  address: varchar("address", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 15 }).notNull(),
+});
+
+export const candidate = pgTable("candidate", {
+  id: text("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  phone: varchar("phone", { length: 15 }).notNull(),
+  dateOfBirth: date("date_of_birth").notNull(),
+  address: varchar("address", { length: 255 }).notNull(),
+  entityId: text("entity_id").references(() => entity.id, {
+    onDelete: "set null",
+  }),
+});
+
+export const resume = pgTable("resume", {
+  id: text("id").primaryKey(),
+  experiences: json("experiences").notNull(),
+  educations: json("educations").notNull(),
+  skills: json("skills").notNull(),
+  candidateId: text("candidate_id")
+    .notNull()
+    .references(() => candidate.id, { onDelete: "cascade" }),
+  entityId: text("entity_id").references(() => entity.id, {
+    onDelete: "set null",
+  }),
 });

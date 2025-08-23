@@ -1,5 +1,6 @@
+import { adminClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
- 
+
 type ErrorTypes = Partial<
   Record<
     keyof typeof authClient.$ERROR_CODES,
@@ -124,5 +125,6 @@ export const getErrorMessage = (code: string, lang: "en" | "ptBr") => {
 };
 
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL,
+  baseURL: process.env.BETTER_AUTH_URL,
+  plugins: [adminClient()],
 });
