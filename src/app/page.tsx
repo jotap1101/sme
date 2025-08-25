@@ -18,15 +18,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  // const session = await auth.api.getSession({
-  //   headers: await headers(),
-
-  // });
-
-  // if (!session) {
-  //   return <p>You are not logged in</p>;
-  // }
-
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
       <Header />

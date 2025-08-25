@@ -2,7 +2,10 @@ import { ShieldCheck } from "lucide-react";
 
 export default function Security() {
   return (
-    <section className="bg-secondary flex justify-center px-5 py-12 sm:px-0 lg:py-24">
+    <section
+      id="security"
+      className="bg-secondary flex justify-center px-5 py-12 sm:px-0 lg:py-24"
+    >
       <div className="container">
         <div className="flex flex-col items-center gap-4 text-center">
           <ShieldCheck className="text-primary h-12 w-12" />
