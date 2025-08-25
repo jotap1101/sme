@@ -92,7 +92,7 @@ export function SignUpForm({
       image: values.image
         ? await convertImageToBase64(values.image)
         : undefined,
-      callbackURL: `${window.location.origin}/sign-in`,
+      callbackURL: "/sign-in",
       fetchOptions: {
         onRequest: () => {
           toastId = toast.loading("Criando conta...");

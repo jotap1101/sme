@@ -49,65 +49,51 @@ export function SignInForm({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function getCallbackURL() {
     const params = new URLSearchParams(window.location.search);
     const redirectTo = params.get("redirectTo") || "/dashboard";
+    return `${window.location.origin}${redirectTo}`;
+  }
 
+  function getFetchOptions() {
+    return {
+      onRequest: () => {
+        toastId = toast.loading("Fazendo login...");
+      },
+      onError: (ctx: { error?: { code?: string; message?: string } }) => {
+        if (toastId) toast.dismiss(toastId);
+
+        const code = ctx?.error?.code ?? "unknown_error";
+        const message = ctx?.error?.message ?? "Ocorreu um erro";
+
+        toast.error(
+          getErrorMessage(code, "ptBr") || message,
+        );
+      },
+      onSuccess: () => {
+        if (toastId) toast.dismiss(toastId);
+        toast.success("Login realizado com sucesso!");
+      },
+    };
+  }
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     await authClient.signIn.email({
       email: values.email,
       password: values.password,
       rememberMe: true,
-      callbackURL: `${window.location.origin}${redirectTo}`,
-      fetchOptions: {
-        onRequest: () => {
-          toastId = toast.loading("Fazendo login...");
-        },
-        onError: (ctx) => {
-          if (toastId) {
-            toast.dismiss(toastId);
-          }
-
-          toast.error(
-            getErrorMessage(ctx.error.code, "ptBr") || ctx.error.message,
-          );
-        },
-        onSuccess: () => {
-          if (toastId) {
-            toast.dismiss(toastId);
-          }
-
-          toast.success("Login realizado com sucesso!");
-        },
-      },
+      callbackURL: getCallbackURL(),
+      fetchOptions: getFetchOptions(),
     });
   }
 
-  const handleGoogleSignIn = async () => {
+  async function handleGoogleSignIn() {
     await authClient.signIn.social({
       provider: "google",
-      fetchOptions: {
-        onRequest: () => {
-          toastId = toast.loading("Fazendo login...");
-        },
-        onError: (ctx) => {
-          if (toastId) {
-            toast.dismiss(toastId);
-          }
-
-          toast.error(
-            getErrorMessage(ctx.error.code, "ptBr") || ctx.error.message,
-          );
-        },
-        onSuccess: () => {
-          if (toastId) {
-            toast.dismiss(toastId);
-          }
-
-          toast.success("Login realizado com sucesso!");
-        },
-      },
+      callbackURL: getCallbackURL(),
+      fetchOptions: getFetchOptions(),
     });
-  };
+  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

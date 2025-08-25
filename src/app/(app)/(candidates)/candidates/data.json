@@ -1,0 +1,32 @@
+[
+  {
+    "id": "728ed52f",
+    "name": "John Doe",
+    "phoneNumber": "+5535998724512",
+    "address": "123 Main St, Anytown, USA"
+  },
+  {
+    "id": "728ed52g",
+    "name": "Jane Smith",
+    "phoneNumber": "+5535998724513",
+    "address": "456 Elm St, Othertown, USA"
+  },
+  {
+    "id": "728ed52h",
+    "name": "Alice Johnson",
+    "phoneNumber": "+5535998724514",
+    "address": "789 Oak St, Sometown, USA"
+  },
+  {
+    "id": "728ed52i",
+    "name": "Bob Brown",
+    "phoneNumber": "+5535998724515",
+    "address": "101 Pine St, Anycity, USA"
+  },
+  {
+    "id": "728ed52j",
+    "name": "Charlie Davis",
+    "phoneNumber": "+5535998724516",
+    "address": "202 Maple St, Anycity, USA"
+  }
+]
