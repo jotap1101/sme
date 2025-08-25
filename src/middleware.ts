@@ -4,10 +4,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
+  // Check if the user is authenticated
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
+  // Redirect authenticated users away from sign-in and sign-up pages
+  if (session && (request.nextUrl.pathname.startsWith("/sign-in") || request.nextUrl.pathname.startsWith("/sign-up"))) {
+    const dashboardUrl = new URL("/dashboard", request.url);
+
+    dashboardUrl.searchParams.set("isAuthenticated", "true");
+
+    return NextResponse.redirect(dashboardUrl);
+  }
+
+  // Redirect unauthenticated users to the sign-in page
   if (!session) {
     const signInUrl = new URL("/sign-in", request.url);
     signInUrl.searchParams.set("redirectTo", request.nextUrl.pathname);
@@ -21,5 +32,5 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   runtime: "nodejs",
-  matcher: ["/dashboard"], // Apply middleware to specific routes
+  matcher: ["/dashboard/:path*", "/sign-in", "/sign-up"], // Apply middleware to specific routes
 };

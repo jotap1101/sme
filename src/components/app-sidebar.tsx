@@ -9,6 +9,7 @@ import {
   Settings,
   Users,
 } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
@@ -105,10 +106,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/dashboard">
                 <Briefcase className="!size-5" />
                 <span className="text-base font-semibold">SME</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
