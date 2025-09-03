@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 type SiteHeaderProps = {
-  title: string;
+  title: string | undefined;
 };
 
 export function SiteHeader({ title }: SiteHeaderProps) {

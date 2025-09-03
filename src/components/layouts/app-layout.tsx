@@ -20,7 +20,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       >
         <AppSidebar variant="inset" />
         <SidebarInset>
-          <SiteHeader />
+          <SiteHeader title={undefined} />
           {children}
         </SidebarInset>
       </SidebarProvider>
