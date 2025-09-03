@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import data from "@/app/(app)/(candidates)/data/data.json";
+import data from "@/app/(app)/dashboard/data.json";
 import { DataTable } from "@/components/data-table";
 import { MainContent } from "@/components/main-content";
 
