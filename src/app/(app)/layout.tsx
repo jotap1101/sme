@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -10,7 +11,6 @@ type AppLayoutProps = {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
-      <Analytics />
       <SidebarProvider
         style={
           {
@@ -22,6 +22,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <AppSidebar variant="inset" />
         <SidebarInset>{children}</SidebarInset>
       </SidebarProvider>
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }

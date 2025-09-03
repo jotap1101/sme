@@ -1,6 +1,7 @@
 import "../../app/globals.css";
 
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -32,7 +33,6 @@ export default function BaseLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Analytics />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -42,6 +42,8 @@ export default function BaseLayout({
           {children}
           <Toaster position="top-center" />
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
